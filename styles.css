@@ -1,0 +1,213 @@
+/* Andika, self-hosted (SIL Open Font License, see fonts/OFL.txt). */
+@font-face {
+  font-family: "Andika";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("fonts/andika-400-latin-ext.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: "Andika";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("fonts/andika-400-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Andika";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("fonts/andika-700-latin-ext.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: "Andika";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("fonts/andika-700-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+:root {
+  color-scheme: light;
+  --paper: #FFFFFF;
+  --rule: #A9C1EC;
+  --margin: #F2A3A3;
+  --pencil: #3B3F46;
+  --crayon: #E63946;
+  --guide: #9AA7BD;
+  --tape: rgba(255, 221, 120, 0.75);
+  --row: 96px;
+  --margin-x: 72px;
+}
+* { box-sizing: border-box; }
+html { min-height: 100%; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: "Andika", "Comic Neue", "Trebuchet MS", system-ui, sans-serif;
+  color: var(--pencil);
+  background-color: var(--paper);
+  background-image:
+    linear-gradient(to right, transparent calc(var(--margin-x) - 1px), var(--margin) calc(var(--margin-x) - 1px), var(--margin) calc(var(--margin-x) + 1px), transparent calc(var(--margin-x) + 1px)),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='96'%3E%3Crect width='16' height='2' fill='%23A9C1EC'/%3E%3Crect y='47' width='8' height='2' fill='%23D3DFF5'/%3E%3C/svg%3E");
+  background-size: auto, 16px var(--row);
+  padding: 2rem 1.5rem 3rem calc(var(--margin-x) + 1.5rem);
+}
+a { color: var(--crayon); font-weight: 700; }
+a:hover { text-decoration-thickness: 3px; }
+
+/* Hero */
+.hero {
+  min-height: calc(100vh - 5rem);
+  display: grid;
+  place-items: center;
+}
+.hero-inner {
+  display: flex;
+  align-items: center;
+  gap: clamp(1rem, 4vw, 3rem);
+  max-width: 52rem;
+}
+.letter {
+  flex: 0 0 auto;
+  width: clamp(140px, 28vw, 260px);
+  height: auto;
+}
+.guide {
+  fill: none;
+  stroke: var(--guide);
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-dasharray: 1 12;
+}
+.stroke {
+  fill: none;
+  stroke: var(--crayon);
+  stroke-width: 24;
+  stroke-linecap: round;
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  animation: trace 1.6s 0.4s ease-in-out forwards;
+  filter: url(#crayon);
+}
+@keyframes trace { to { stroke-dashoffset: 0; } }
+h1 {
+  font-size: clamp(2.25rem, 6vw, 4rem);
+  font-weight: 700;
+  line-height: 1.05;
+  margin: 0 0 0.75rem;
+}
+h2 {
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  line-height: 1.1;
+  margin: 0 0 1.5rem;
+}
+.school {
+  font-size: clamp(1.1rem, 2.4vw, 1.4rem);
+  margin: 0 0 0.25rem;
+}
+.team {
+  font-size: clamp(1.1rem, 2.4vw, 1.4rem);
+  margin: 0 0 1.5rem;
+}
+.stamp {
+  display: inline-block;
+  font-size: clamp(1.25rem, 3vw, 1.75rem);
+  font-weight: 700;
+  color: var(--crayon);
+  margin: 0;
+  padding: 0.2em 0.6em;
+  border: 3px solid var(--crayon);
+  border-radius: 0.6em 0.3em 0.7em 0.25em;
+  transform: rotate(-3deg);
+}
+.scroll-hint {
+  display: inline-block;
+  margin-top: 1.5rem;
+  font-size: 1.1rem;
+}
+
+/* Sections */
+.section {
+  max-width: 52rem;
+  margin: 0 auto;
+  padding: 3rem 0;
+}
+
+/* Sticker photo + caption + story */
+.sticker {
+  position: relative;
+  flex: 0 0 auto;
+  width: clamp(200px, 34vw, 300px);
+  margin: 1rem 0;
+  transform: rotate(-4deg);
+}
+.sticker img {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter:
+    drop-shadow(0 0 1px rgba(0, 0, 0, 0.25))
+    drop-shadow(2px 6px 8px rgba(0, 0, 0, 0.18));
+}
+.sticker::before {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  width: 96px;
+  height: 28px;
+  background: var(--tape);
+  transform: translateX(-50%) rotate(6deg);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+  z-index: 1;
+}
+.caption {
+  font-size: clamp(1.3rem, 3vw, 1.75rem);
+  font-weight: 700;
+  margin: 0 0 1rem;
+}
+.caption .num { color: var(--crayon); }
+.story {
+  font-size: clamp(1.1rem, 2.4vw, 1.35rem);
+  line-height: 1.5;
+  margin: 0 0 1.5rem;
+  padding: 1rem 1.25rem;
+  background: rgba(255, 255, 255, 0.85);
+  border: 2px dashed var(--guide);
+  border-radius: 0.8em 0.4em 0.9em 0.5em;
+}
+.story .by {
+  display: block;
+  margin-top: 0.5rem;
+  font-size: 0.9em;
+}
+
+/* Gallery */
+.back { display: inline-block; margin-bottom: 1.5rem; font-size: 1.1rem; }
+.gallery {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 3rem 2rem;
+}
+.gallery .sticker { width: 100%; max-width: 260px; }
+.gallery li:nth-child(even) .sticker { transform: rotate(3deg); }
+.gallery .caption { font-size: 1.25rem; margin-top: 1rem; }
+.gallery .story { font-size: 1.05rem; }
+
+@media (max-width: 640px) {
+  :root { --margin-x: 28px; }
+  .hero-inner { flex-direction: column; align-items: flex-start; }
+  .sticker { margin-left: 0.5rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .stroke { animation: none; stroke-dashoffset: 0; }
+}
