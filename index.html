@@ -11,10 +11,63 @@
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🖍️</text></svg>">
 <link rel="preload" href="fonts/andika-400-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/andika-700-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="styles.css">
+<!-- Bump ?v= whenever styles.css changes so browsers fetch the new file. -->
+<link rel="stylesheet" href="styles.css?v=2">
+<style>
+  /* Kept in the page itself so these rules always match this markup. */
+  /* Hand-drawn hearts and stars behind the hero */
+  .hero { position: relative; }
+  .hero-inner { position: relative; z-index: 1; }
+  .doodles { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+  .doodle {
+    position: absolute;
+    left: min(var(--x), calc(100% - var(--s) - 12px));
+    top: var(--y);
+    width: var(--s);
+    height: var(--s);
+    overflow: visible;
+    fill: currentColor;
+    fill-opacity: 0.15;
+    stroke: currentColor;
+    stroke-width: 6;
+    stroke-linejoin: round;
+    filter: url(#crayon);
+    opacity: 0;
+    transform: rotate(var(--r)) scale(0.4);
+    animation: pop 0.5s var(--d) cubic-bezier(.3, 1.6, .5, 1) forwards;
+  }
+  .doodle.red { color: var(--crayon, #E63946); }
+  .doodle.pink { color: #F28DB2; }
+  .doodle.gold { color: #F2B705; }
+  .doodle.blue { color: #5B8DEF; }
+  @keyframes pop { to { opacity: 0.85; transform: rotate(var(--r)) scale(1); } }
+  @media (max-width: 640px) {
+    .doodle.wide { display: none; }
+    .doodle.m-low { top: 90%; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .doodle { animation: none; opacity: 0.85; transform: rotate(var(--r)); }
+  }
+</style>
 </head>
 <body>
 <header class="hero">
+  <div class="doodles" aria-hidden="true">
+    <svg width="0" height="0" style="position:absolute"><defs>
+      <symbol id="heart" viewBox="0 0 100 100"><path d="M50 84 C22 64 8 46 14 30 C20 13 42 12 50 31 C58 12 80 13 86 30 C92 46 78 64 50 84 Z"/></symbol>
+      <symbol id="star" viewBox="0 0 100 100"><path d="M50.0 12.0 L60.6 39.4 L89.9 41.0 L67.1 59.6 L74.7 88.0 L50.0 72.0 L25.3 88.0 L32.9 59.6 L10.1 41.0 L39.4 39.4 Z"/></symbol>
+    </defs></svg>
+    <svg class="doodle red" style="--x:6%;--y:10%;--s:52px;--r:-14deg;--d:2.2s"><use href="#heart"/></svg>
+    <svg class="doodle gold" style="--x:88%;--y:8%;--s:60px;--r:12deg;--d:2.4s"><use href="#star"/></svg>
+    <svg class="doodle pink wide" style="--x:74%;--y:30%;--s:34px;--r:-8deg;--d:2.6s"><use href="#heart"/></svg>
+    <svg class="doodle blue m-low" style="--x:16%;--y:72%;--s:40px;--r:18deg;--d:2.8s"><use href="#star"/></svg>
+    <svg class="doodle red" style="--x:90%;--y:70%;--s:48px;--r:-10deg;--d:3.0s"><use href="#heart"/></svg>
+    <svg class="doodle pink wide" style="--x:48%;--y:6%;--s:30px;--r:20deg;--d:3.2s"><use href="#star"/></svg>
+    <svg class="doodle gold wide" style="--x:58%;--y:86%;--s:38px;--r:-16deg;--d:3.4s"><use href="#star"/></svg>
+    <svg class="doodle blue wide" style="--x:34%;--y:90%;--s:30px;--r:8deg;--d:3.6s"><use href="#heart"/></svg>
+    <svg class="doodle gold wide" style="--x:3%;--y:44%;--s:28px;--r:10deg;--d:3.8s"><use href="#star"/></svg>
+    <svg class="doodle blue wide" style="--x:80%;--y:52%;--s:26px;--r:-20deg;--d:4.0s"><use href="#star"/></svg>
+  </div>
   <div class="hero-inner">
     <svg class="letter" viewBox="0 0 200 200" role="img" aria-label="A crayon letter C">
       <defs>
