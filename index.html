@@ -36,6 +36,9 @@
     transform: rotate(var(--r)) scale(0.4);
     animation: pop 0.5s var(--d) cubic-bezier(.3, 1.6, .5, 1) forwards;
   }
+  /* Easter egg: hearts are clickable and recolor the big C. */
+  .doodles { z-index: 2; }
+  .doodle.heart { pointer-events: auto; cursor: pointer; -webkit-tap-highlight-color: transparent; }
   .doodle.red { color: var(--crayon, #E63946); }
   .doodle.pink { color: #F28DB2; }
   .doodle.gold { color: #F2B705; }
@@ -57,14 +60,14 @@
       <symbol id="heart" viewBox="0 0 100 100"><path d="M50 84 C22 64 8 46 14 30 C20 13 42 12 50 31 C58 12 80 13 86 30 C92 46 78 64 50 84 Z"/></symbol>
       <symbol id="star" viewBox="0 0 100 100"><path d="M50.0 12.0 L60.6 39.4 L89.9 41.0 L67.1 59.6 L74.7 88.0 L50.0 72.0 L25.3 88.0 L32.9 59.6 L10.1 41.0 L39.4 39.4 Z"/></symbol>
     </defs></svg>
-    <svg class="doodle red" style="--x:6%;--y:10%;--s:52px;--r:-14deg;--d:2.2s"><use href="#heart"/></svg>
+    <svg class="doodle red heart" style="--x:6%;--y:10%;--s:52px;--r:-14deg;--d:2.2s"><use href="#heart"/></svg>
     <svg class="doodle gold" style="--x:88%;--y:8%;--s:60px;--r:12deg;--d:2.4s"><use href="#star"/></svg>
-    <svg class="doodle pink wide" style="--x:74%;--y:30%;--s:34px;--r:-8deg;--d:2.6s"><use href="#heart"/></svg>
+    <svg class="doodle pink wide heart" style="--x:74%;--y:30%;--s:34px;--r:-8deg;--d:2.6s"><use href="#heart"/></svg>
     <svg class="doodle blue m-low" style="--x:16%;--y:72%;--s:40px;--r:18deg;--d:2.8s"><use href="#star"/></svg>
-    <svg class="doodle red" style="--x:90%;--y:70%;--s:48px;--r:-10deg;--d:3.0s"><use href="#heart"/></svg>
+    <svg class="doodle red heart" style="--x:90%;--y:70%;--s:48px;--r:-10deg;--d:3.0s"><use href="#heart"/></svg>
     <svg class="doodle pink wide" style="--x:48%;--y:6%;--s:30px;--r:20deg;--d:3.2s"><use href="#star"/></svg>
     <svg class="doodle gold wide" style="--x:58%;--y:86%;--s:38px;--r:-16deg;--d:3.4s"><use href="#star"/></svg>
-    <svg class="doodle blue wide" style="--x:34%;--y:90%;--s:30px;--r:8deg;--d:3.6s"><use href="#heart"/></svg>
+    <svg class="doodle blue wide heart" style="--x:34%;--y:90%;--s:30px;--r:8deg;--d:3.6s"><use href="#heart"/></svg>
     <svg class="doodle gold wide" style="--x:3%;--y:44%;--s:28px;--r:10deg;--d:3.8s"><use href="#star"/></svg>
     <svg class="doodle blue wide" style="--x:80%;--y:52%;--s:26px;--r:-20deg;--d:4.0s"><use href="#star"/></svg>
   </div>
@@ -90,5 +93,33 @@
   </div>
 </header>
 
+<script>
+  // Easter egg: each heart click re-traces the big C in the next crayon color.
+  (function () {
+    var colors = ['#F28DB2', '#F2B705', '#5B8DEF', '#2BA84A', '#8E5BD9', '#F5821F', '#1FAFA8', '#E63946'];
+    var next = 0;
+    var stroke = document.querySelector('.letter .stroke');
+    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    document.querySelectorAll('.doodle.heart').forEach(function (heart) {
+      heart.addEventListener('click', function () {
+        stroke.style.stroke = colors[next];
+        next = (next + 1) % colors.length;
+        if (!reduceMotion.matches) {
+          stroke.style.animation = 'none';
+          void stroke.getBoundingClientRect();
+          stroke.style.animation = 'trace 1.6s ease-in-out forwards';
+          var r = getComputedStyle(heart).getPropertyValue('--r').trim() || '0deg';
+          if (heart.animate) {
+            heart.animate([
+              { transform: 'rotate(' + r + ') scale(1)' },
+              { transform: 'rotate(' + r + ') scale(1.35)' },
+              { transform: 'rotate(' + r + ') scale(1)' }
+            ], { duration: 350, easing: 'ease-out' });
+          }
+        }
+      });
+    });
+  })();
+</script>
 </body>
 </html>
