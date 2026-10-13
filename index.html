@@ -16,15 +16,17 @@
 <meta property="og:image:alt" content="A red crayon letter C on notebook paper with the words C is for Creativity and CisforCreativity.com">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🖍️</text></svg>">
+<link rel="preload" href="fonts/patrick-hand-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/andika-400-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/andika-700-latin.woff2" as="font" type="font/woff2" crossorigin>
 <!-- Bump ?v= whenever styles.css changes so browsers fetch the new file. -->
-<link rel="stylesheet" href="styles.css?v=5">
+<link rel="stylesheet" href="styles.css?v=7">
 <style>
   /* Kept in the page itself so these rules always match this markup. */
   /* The headline is the web address (crayon heading style from styles.css), next to the big C. */
   .site-name {
     font-size: clamp(2rem, 6.2vw, 4.4rem);
+    -webkit-text-stroke: 0.04em currentColor;
     white-space: nowrap;
     transform: rotate(-2deg);
     transform-origin: left center;
@@ -192,6 +194,11 @@
   html.space .hero a { color: #FFD166; }
   html.space .doodle { fill-opacity: 0.4; }
   html.space .site-name { color: #FF9EB1; }
+  /* Regular text lines are one half-space (48px) apart so each sits between a
+     dotted line and a solid line (see snap.js). */
+  .tagline p { margin: 0; line-height: 48px; }
+  .scroll-hint { line-height: 48px; }
+  .tagline { margin-bottom: 1rem; }
 
   @media (max-width: 640px) {
     .solar { left: 50%; top: 86%; transform: scale(0.5); }
@@ -372,7 +379,7 @@
     <svg class="doodle gold wide star" style="--x:3%;--y:44%;--s:28px;--r:10deg;--d:3.8s"><use href="#star"/></svg>
     <svg class="doodle blue wide star" style="--x:80%;--y:52%;--s:26px;--r:-20deg;--d:4.0s"><use href="#star"/></svg>
   </div>
-  <div class="hero-inner">
+  <div class="hero-inner" data-snap-root>
     <svg class="letter" viewBox="0 0 200 200" role="img" aria-label="A crayon letter C">
       <defs>
         <filter id="crayon">
@@ -434,12 +441,14 @@
       <path class="stroke" pathLength="100" d="M149.5 50.5 A70 70 0 1 0 149.5 149.5"/>
     </svg>
     <div>
-      <h1 class="site-name" aria-label="C is for Creativity, CisforCreativity.com">CisforCreativity.com</h1>
-      <p class="school">A 2nd grade business</p>
-      <p class="team">Made by Sydney and friends</p>
-      <p class="stamp">Coming soon</p>
+      <h1 class="site-name" data-snap="span" aria-label="C is for Creativity, CisforCreativity.com">CisforCreativity.com</h1>
+      <div class="tagline" data-snap>
+        <p class="school">A 2nd grade business</p>
+        <p class="team">Made by Sydney and friends</p>
+      </div>
+      <p class="stamp" data-snap="span">Coming soon</p>
       <br>
-      <a class="scroll-hint" href="gallery.html">See what we made &rarr;</a>
+      <a class="scroll-hint" data-snap data-snap-free href="gallery.html">See what we made &rarr;</a>
     </div>
   </div>
 </header>
@@ -536,5 +545,6 @@
     });
   })();
 </script>
+<script src="snap.js?v=9"></script>
 </body>
 </html>

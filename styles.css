@@ -110,13 +110,16 @@ h1, h2 {
   font-family: "Patrick Hand", "Andika", cursive;
   font-weight: 400;
   color: var(--crayon);
-  -webkit-text-stroke: 0.04em currentColor;
+  -webkit-text-stroke: 0.012em currentColor;
   filter: url(#crayon);
 }
 h1 {
   font-size: clamp(2.6rem, 7vw, 4.4rem);
   line-height: 1.1;
   margin: 0 0 0.75rem;
+  /* Big headings tilt a little, like they were written by hand. */
+  transform: rotate(-2deg);
+  transform-origin: left center;
 }
 h2 {
   font-size: clamp(2rem, 5vw, 3rem);

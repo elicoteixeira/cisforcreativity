@@ -16,10 +16,11 @@
 <meta property="og:image:alt" content="A red crayon letter C on notebook paper with the words C is for Creativity and CisforCreativity.com">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🖍️</text></svg>">
+<link rel="preload" href="fonts/patrick-hand-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/andika-400-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/andika-700-latin.woff2" as="font" type="font/woff2" crossorigin>
 <!-- Bump ?v= whenever styles.css changes so browsers fetch the new file. -->
-<link rel="stylesheet" href="styles.css?v=5">
+<link rel="stylesheet" href="styles.css?v=7">
 <style>
   /* Kept in the page itself so these rules always match this markup. */
   .gallery { margin-top: 2.5rem; }
@@ -27,6 +28,11 @@
      home page. The script at the bottom writes #1, #2, ... in list order. */
   .gallery { column-gap: 4.5rem; }
   .gallery li { position: relative; }
+  /* snap.js puts each line of regular text between a dotted line and a solid line. */
+  .gallery .caption { margin: 1rem 0 0.75rem; }
+  .gallery .story { padding: 0.25rem 1.25rem; }
+  .gallery .story p { margin: 0; }
+  .gallery .story .by { font-size: 0.9em; }
   .hand-num {
     position: absolute;
     top: 1rem;
@@ -54,9 +60,9 @@
     <feDisplacementMap in="SourceGraphic" in2="noise" scale="3"/>
   </filter>
 </svg>
-<main class="section">
-  <a class="back" href="./">&larr; Home</a>
-  <h1>Our creations</h1>
+<main class="section" data-snap-root>
+  <a class="back" data-snap href="./">&larr; Home</a>
+  <h1 data-snap="span">Our creations</h1>
 
   <!-- To add a creation: copy one <li> block, change the image, caption, and story. The #number is written automatically. -->
   <ul class="gallery">
@@ -64,11 +70,11 @@
       <figure class="sticker">
         <img src="images/flower.png" width="581" height="826" alt="A rainbow clay flower with pink, blue, and red petals and a yellow and green stem">
       </figure>
-      <p class="caption"><span class="num">Order #1:</span> a clay flower for our teacher</p>
-      <p class="story">
-        Ms. C ordered a flower. She didn't say the color, so we went with rainbow colors.
-        <span class="by">by Sydney</span>
-      </p>
+      <p class="caption" data-snap><span class="num">Order #1:</span> a clay flower for our teacher</p>
+      <div class="story">
+        <p data-snap>Ms. C ordered a flower. She didn't say the color, so we went with rainbow colors.</p>
+        <p class="by" data-snap>by Sydney</p>
+      </div>
     </li>
   </ul>
 </main>
@@ -97,6 +103,8 @@
       var text = '#' + (i + 1);
       var svg = document.createElementNS(ns, 'svg');
       svg.setAttribute('class', 'hand-num');
+      svg.setAttribute('data-snap', 'span');
+      svg.setAttribute('data-snap-ratio', String(27 / 60)); // middle of the digits
       svg.setAttribute('role', 'img');
       svg.setAttribute('aria-label', 'Number ' + (i + 1));
       var x = 0;
@@ -115,5 +123,6 @@
     });
   })();
 </script>
+<script src="snap.js?v=9"></script>
 </body>
 </html>
