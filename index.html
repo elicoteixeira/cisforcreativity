@@ -19,19 +19,13 @@
 <link rel="preload" href="fonts/andika-400-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/andika-700-latin.woff2" as="font" type="font/woff2" crossorigin>
 <!-- Bump ?v= whenever styles.css changes so browsers fetch the new file. -->
-<link rel="stylesheet" href="styles.css?v=4">
+<link rel="stylesheet" href="styles.css?v=5">
 <style>
   /* Kept in the page itself so these rules always match this markup. */
-  /* The headline is the web address, hand-written in red crayon next to the big C. */
+  /* The headline is the web address (crayon heading style from styles.css), next to the big C. */
   .site-name {
-    font-family: "Patrick Hand", "Andika", cursive;
     font-size: clamp(2rem, 6.2vw, 4.4rem);
-    font-weight: 400;
-    line-height: 1.1;
     white-space: nowrap;
-    color: var(--crayon, #E63946);
-    -webkit-text-stroke: 0.04em currentColor;
-    filter: url(#crayon);
     transform: rotate(-2deg);
     transform-origin: left center;
     transition: color 0.8s ease;
