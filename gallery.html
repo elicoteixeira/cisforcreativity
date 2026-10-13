@@ -14,32 +14,24 @@
   /* Kept in the page itself so these rules always match this markup. */
   .gallery { margin-top: 2.5rem; counter-reset: creation; }
   .gallery li { counter-increment: creation; }
-  /* Number badge on each photo, written in red crayon like the big C on the home
-     page: #1, #2, ... counted automatically in list order. */
-  @font-face {
-    font-family: "Gochi Hand";
-    src: url("fonts/gochi-hand-digits.woff2") format("woff2");
-    font-display: block;
-  }
-  .gallery .sticker::after {
+  /* Number for each creation, written neatly in red crayon (like the big C on the
+     home page) to the left of the photo: #1, #2, ... counted automatically. */
+  .gallery { column-gap: 4.5rem; }
+  .gallery li { position: relative; }
+  .gallery li::before {
     content: "#" counter(creation);
     position: absolute;
-    top: -32px;
-    left: -36px;
-    z-index: 2;
-    display: grid;
-    place-items: center;
-    width: 6rem;
-    height: 4.8rem;
-    padding-top: 0.15rem;
-    font-family: "Gochi Hand", "Andika", cursive;
-    font-size: 2.7rem;
-    -webkit-text-stroke: 1.6px currentColor;
+    top: 1.4rem;
+    right: calc(100% + 0.6rem);
+    font-size: 2.2rem;
+    font-weight: 700;
     line-height: 1;
     color: var(--crayon, #E63946);
-    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 80'%3E%3Cfilter id='c'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeDisplacementMap in='SourceGraphic' scale='3'/%3E%3C/filter%3E%3Cpath d='M72 13 C46 2 11 11 9 39 C7 66 40 77 65 70 C89 63 96 39 84 21 C77 11 62 7 47 9' fill='none' stroke='%23E63946' stroke-width='6' stroke-linecap='round' filter='url(%23c)'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
     filter: url(#crayon);
-    transform: rotate(-8deg);
+  }
+  @media (max-width: 640px) {
+    /* No room in the margin on phones: write the number just above the photo. */
+    .gallery li::before { position: static; display: block; margin-bottom: 0.4rem; }
   }
 </style>
 </head>
@@ -54,7 +46,7 @@
   <a class="back" href="./">&larr; Home</a>
   <h1>Our creations</h1>
 
-  <!-- To add a creation: copy one <li> block, change the image, caption, and story. The #number badge counts itself. -->
+  <!-- To add a creation: copy one <li> block, change the image, caption, and story. The #number counts itself. -->
   <ul class="gallery">
     <li>
       <figure class="sticker">
