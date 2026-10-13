@@ -194,6 +194,10 @@
   html.space .hero a { color: #FFD166; }
   html.space .doodle { fill-opacity: 0.4; }
   html.space .site-name { color: #FF9EB1; }
+  @media (max-width: 640px) {
+    /* On phones, size the headline to fill the width of the screen. */
+    .site-name { font-size: min(4.4rem, calc((100vw - 76px) / 7.9)); }
+  }
   /* Regular text lines are one half-space (48px) apart so each sits between a
      dotted line and a solid line (see snap.js). */
   .tagline p { margin: 0; line-height: 48px; }
