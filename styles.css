@@ -132,40 +132,6 @@ h2 {
   font-size: 1.1rem;
 }
 
-/* Hand-drawn hearts and stars behind the hero */
-.hero { position: relative; }
-.hero-inner { position: relative; z-index: 1; }
-.doodles { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
-.doodle {
-  position: absolute;
-  left: min(var(--x), calc(100% - var(--s) - 12px));
-  top: var(--y);
-  width: var(--s);
-  height: var(--s);
-  overflow: visible;
-  fill: currentColor;
-  fill-opacity: 0.15;
-  stroke: currentColor;
-  stroke-width: 6;
-  stroke-linejoin: round;
-  filter: url(#crayon);
-  opacity: 0;
-  transform: rotate(var(--r)) scale(0.4);
-  animation: pop 0.5s var(--d) cubic-bezier(.3, 1.6, .5, 1) forwards;
-}
-.doodle.red { color: var(--crayon); }
-.doodle.pink { color: #F28DB2; }
-.doodle.gold { color: #F2B705; }
-.doodle.blue { color: #5B8DEF; }
-@keyframes pop { to { opacity: 0.85; transform: rotate(var(--r)) scale(1); } }
-@media (max-width: 640px) {
-  .doodle.wide { display: none; }
-  .doodle.m-low { top: 90%; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .doodle { animation: none; opacity: 0.85; transform: rotate(var(--r)); }
-}
-
 /* Sections */
 .section {
   max-width: 52rem;
