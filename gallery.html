@@ -23,16 +23,23 @@
 <link rel="stylesheet" href="styles.css?v=7">
 <style>
   /* Kept in the page itself so these rules always match this markup. */
-  .gallery { margin-top: 2.5rem; }
+  /* Compact layout: Home in the first space, the big heading right under it, then
+     the creations. snap.js lines the page text up with the ruled lines. */
+  main.section { padding-top: 0; }
+  .back { margin-bottom: 0; }
+  h1 { font-size: clamp(3rem, 9vw, 5.4rem); margin-bottom: 0; }
+  .gallery { margin-top: 0; }
   /* Number for each creation, hand-drawn in red crayon strokes like the big C on the
      home page. The script at the bottom writes #1, #2, ... in list order. */
   .gallery { column-gap: 4.5rem; }
   .gallery li { position: relative; }
-  /* snap.js puts each line of regular text between a dotted line and a solid line. */
-  .gallery .caption { margin: 1rem 0 0.75rem; }
-  .gallery .story { padding: 0.25rem 1.25rem; }
+  .gallery .sticker { margin: 0.75rem 0 0.25rem; }
+  .gallery .caption { margin: 0 0 0.5rem; }
+  /* The story card has its own background, so its text uses normal spacing
+     instead of lining up with the page. */
+  .gallery .story { padding: 0.75rem 1.25rem; line-height: 1.5; background: #fff; }
   .gallery .story p { margin: 0; }
-  .gallery .story .by { font-size: 0.9em; }
+  .gallery .story .by { margin-top: 0.35rem; font-size: 0.9em; }
   .hand-num {
     position: absolute;
     top: 1rem;
@@ -72,8 +79,8 @@
       </figure>
       <p class="caption" data-snap><span class="num">Order #1:</span> a clay flower for our teacher</p>
       <div class="story">
-        <p data-snap>Ms. C ordered a flower. She didn't say the color, so we went with rainbow colors.</p>
-        <p class="by" data-snap>by Sydney</p>
+        <p>Ms. C ordered a flower. She didn't say the color, so we went with rainbow colors.</p>
+        <p class="by">by Sydney</p>
       </div>
     </li>
   </ul>
