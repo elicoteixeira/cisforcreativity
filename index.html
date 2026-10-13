@@ -19,9 +19,23 @@
 <link rel="preload" href="fonts/andika-400-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/andika-700-latin.woff2" as="font" type="font/woff2" crossorigin>
 <!-- Bump ?v= whenever styles.css changes so browsers fetch the new file. -->
-<link rel="stylesheet" href="styles.css?v=3">
+<link rel="stylesheet" href="styles.css?v=4">
 <style>
   /* Kept in the page itself so these rules always match this markup. */
+  /* The headline is the web address, hand-written in red crayon next to the big C. */
+  .site-name {
+    font-family: "Patrick Hand", "Andika", cursive;
+    font-size: clamp(2rem, 6.2vw, 4.4rem);
+    font-weight: 400;
+    line-height: 1.1;
+    white-space: nowrap;
+    color: var(--crayon, #E63946);
+    -webkit-text-stroke: 0.04em currentColor;
+    filter: url(#crayon);
+    transform: rotate(-2deg);
+    transform-origin: left center;
+    transition: color 0.8s ease;
+  }
   /* Hand-drawn hearts and stars behind the hero */
   .hero { position: relative; }
   .hero-inner { position: relative; z-index: 1; }
@@ -183,9 +197,7 @@
   html.space .stamp { color: #FF9EB1; border-color: #FF9EB1; }
   html.space .hero a { color: #FFD166; }
   html.space .doodle { fill-opacity: 0.4; }
-  html.space .site-footer a { color: #FF9EB1; }
-  /* Leave room for the footer so the home page still fits one screen. */
-  .hero { min-height: calc(100vh - 9.25rem); }
+  html.space .site-name { color: #FF9EB1; }
 
   @media (max-width: 640px) {
     .solar { left: 50%; top: 86%; transform: scale(0.5); }
@@ -357,7 +369,7 @@
     </defs></svg>
     <svg class="doodle red heart" style="--x:6%;--y:10%;--s:52px;--r:-14deg;--d:2.2s"><use href="#heart"/></svg>
     <svg class="doodle gold star" style="--x:88%;--y:8%;--s:60px;--r:12deg;--d:2.4s"><use href="#star"/></svg>
-    <svg class="doodle pink wide heart" style="--x:74%;--y:30%;--s:34px;--r:-8deg;--d:2.6s"><use href="#heart"/></svg>
+    <svg class="doodle pink wide heart" style="--x:70%;--y:66%;--s:34px;--r:-8deg;--d:2.6s"><use href="#heart"/></svg>
     <svg class="doodle blue m-low star" style="--x:16%;--y:72%;--s:40px;--r:18deg;--d:2.8s"><use href="#star"/></svg>
     <svg class="doodle red heart" style="--x:90%;--y:70%;--s:48px;--r:-10deg;--d:3.0s"><use href="#heart"/></svg>
     <svg class="doodle pink wide star" style="--x:48%;--y:6%;--s:30px;--r:20deg;--d:3.2s"><use href="#star"/></svg>
@@ -428,7 +440,7 @@
       <path class="stroke" pathLength="100" d="M149.5 50.5 A70 70 0 1 0 149.5 149.5"/>
     </svg>
     <div>
-      <h1>C is for Creativity</h1>
+      <h1 class="site-name" aria-label="C is for Creativity, CisforCreativity.com">CisforCreativity.com</h1>
       <p class="school">A 2nd grade business</p>
       <p class="team">Made by Sydney and friends</p>
       <p class="stamp">Coming soon</p>
@@ -437,7 +449,6 @@
     </div>
   </div>
 </header>
-<footer class="site-footer"><a href="./">CisforCreativity.com</a></footer>
 
 <script>
   // Easter eggs: tap a heart to re-draw the big C in a new color,

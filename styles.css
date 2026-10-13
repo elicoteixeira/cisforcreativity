@@ -1,4 +1,5 @@
 /* Patrick Hand, self-hosted and trimmed to the letters in "CisforCreativity.com"
+   (the home page headline)
    (SIL Open Font License, see fonts/OFL-PatrickHand.txt). */
 @font-face {
   font-family: "Patrick Hand";
@@ -141,25 +142,6 @@ h2 {
   font-size: 1.1rem;
 }
 
-/* Footer: the site address written in red crayon on every page. */
-.site-footer {
-  position: relative;
-  z-index: 1;
-  text-align: center;
-  padding: 1.5rem 0 0.25rem;
-}
-.site-footer a {
-  display: inline-block;
-  font-family: "Patrick Hand", "Andika", cursive;
-  font-size: 1.7rem;
-  font-weight: 400;
-  color: var(--crayon);
-  text-decoration: none;
-  -webkit-text-stroke: 0.5px currentColor;
-  filter: url(#crayon);
-  transform: rotate(-2deg);
-}
-.site-footer a:hover { text-decoration: underline; text-decoration-thickness: 2px; }
 
 /* Sections */
 .section {
