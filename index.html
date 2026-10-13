@@ -36,14 +36,155 @@
     transform: rotate(var(--r)) scale(0.4);
     animation: pop 0.5s var(--d) cubic-bezier(.3, 1.6, .5, 1) forwards;
   }
-  /* Easter egg: hearts are clickable and recolor the big C. */
+  /* Easter eggs: hearts recolor the big C, stars switch to space. */
   .doodles { z-index: 2; }
-  .doodle.heart { pointer-events: auto; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .doodle.heart, .doodle.star { pointer-events: auto; cursor: pointer; -webkit-tap-highlight-color: transparent; }
   .doodle.red { color: var(--crayon, #E63946); }
   .doodle.pink { color: #F28DB2; }
   .doodle.gold { color: #F2B705; }
   .doodle.blue { color: #5B8DEF; }
   @keyframes pop { to { opacity: 0.85; transform: rotate(var(--r)) scale(1); } }
+  /* Space mode (tap a star): starry sky, the solar system, and the C becomes Earth. */
+  .space-layer {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 1.2s ease, visibility 0s linear 1.2s;
+    background:
+      radial-gradient(ellipse 60% 45% at 18% 25%, rgba(132, 70, 210, 0.32), transparent 70%),
+      radial-gradient(ellipse 50% 40% at 85% 15%, rgba(40, 120, 230, 0.26), transparent 70%),
+      radial-gradient(ellipse 70% 50% at 60% 95%, rgba(220, 70, 140, 0.18), transparent 70%),
+      linear-gradient(180deg, #050816 0%, #0b1030 55%, #120a2a 100%);
+  }
+  html.space .space-layer { opacity: 1; visibility: visible; transition: opacity 1.2s ease; }
+  html:not(.space) .space-layer *, html:not(.space) .earth * { animation-play-state: paused !important; }
+  .starfield { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .starfield circle { fill: #fff; }
+  .starfield .tw { animation: twinkle var(--tw, 3s) ease-in-out infinite alternate; }
+  @keyframes twinkle { from { opacity: 1; } to { opacity: 0.2; } }
+  .shooting {
+    position: absolute;
+    top: 14%;
+    left: -12%;
+    width: 160px;
+    height: 2px;
+    border-radius: 2px;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0), #fff);
+    opacity: 0;
+    animation: shoot 11s 1.5s linear infinite;
+  }
+  @keyframes shoot {
+    0% { transform: translate(0, 0) rotate(16deg); opacity: 0; }
+    1% { opacity: 1; }
+    8% { transform: translate(80vw, 23vw) rotate(16deg); opacity: 0; }
+    100% { transform: translate(80vw, 23vw) rotate(16deg); opacity: 0; }
+  }
+
+  /* The solar system. Orbits are circles squashed into ellipses; each planet
+     spins backwards and un-squashes itself so it stays round. */
+  .solar { position: absolute; left: 74%; top: 74%; width: 0; height: 0; }
+  .orbits { position: absolute; left: 0; top: 0; transform: scaleY(0.38); }
+  .orbit {
+    position: absolute;
+    left: calc(var(--a) * -1);
+    top: calc(var(--a) * -1);
+    width: calc(var(--a) * 2);
+    height: calc(var(--a) * 2);
+    border: 1.5px solid rgba(190, 205, 255, 0.18);
+    border-radius: 50%;
+    animation: orbit var(--t) linear infinite;
+    animation-delay: var(--p);
+  }
+  .planet {
+    position: absolute;
+    left: 100%;
+    top: 50%;
+    width: var(--w);
+    height: var(--w);
+    margin: calc(var(--w) / -2) 0 0 calc(var(--w) / -2);
+    border-radius: 50%;
+    background: var(--bg);
+    box-shadow: inset -3px -2px 6px rgba(0, 0, 0, 0.55), 0 0 8px rgba(255, 255, 255, 0.15);
+    transform: scaleY(2.6316);
+    animation: counter var(--t) linear infinite;
+    animation-delay: var(--p);
+  }
+  @keyframes orbit { to { transform: rotate(360deg); } }
+  @keyframes counter {
+    from { transform: rotate(0deg) scaleY(2.6316); }
+    to { transform: rotate(-360deg) scaleY(2.6316); }
+  }
+  .mercury { --a: 95px; --t: 6s; --p: -2s; --w: 7px; --bg: radial-gradient(circle at 35% 35%, #e4ded8, #8a8580); }
+  .venus { --a: 130px; --t: 10s; --p: -7s; --w: 11px; --bg: radial-gradient(circle at 35% 35%, #fff4d0, #d9b26f); }
+  .earthlet { --a: 168px; --t: 14s; --p: -3s; --w: 11px; --bg: radial-gradient(circle at 35% 35%, #9fe0a0 0 18%, #4f9ef0 22%, #1d4f9c); }
+  .mars { --a: 205px; --t: 20s; --p: -13s; --w: 9px; --bg: radial-gradient(circle at 35% 35%, #ffb896, #c1440e); }
+  .jupiter { --a: 270px; --t: 34s; --p: -9s; --w: 30px;
+    --bg: radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 0.35), transparent 55%),
+          linear-gradient(#e8cfa6 0 18%, #c48a5a 18% 28%, #efdcb8 28% 44%, #b97848 44% 54%, #e9d3ae 54% 70%, #c99366 70% 80%, #e8cfa6 80%); }
+  .saturn { --a: 340px; --t: 48s; --p: -30s; --w: 24px; --bg: radial-gradient(circle at 35% 35%, #fff3cf, #d8b878 70%, #b8955a); }
+  .saturn .planet::before {
+    content: "";
+    position: absolute;
+    left: -62%;
+    top: 36%;
+    width: 224%;
+    height: 28%;
+    border-radius: 50%;
+    border: 3px solid rgba(236, 214, 165, 0.8);
+    box-shadow: 0 0 0 2px rgba(200, 170, 120, 0.35);
+    transform: rotate(-16deg);
+  }
+  .uranus { --a: 405px; --t: 66s; --p: -50s; --w: 16px; --bg: radial-gradient(circle at 35% 35%, #e0fcff, #7fd6e0); }
+  .neptune { --a: 465px; --t: 84s; --p: -20s; --w: 16px; --bg: radial-gradient(circle at 35% 35%, #a8c8ff, #2f55c9); }
+  .sun {
+    position: absolute;
+    left: -38px;
+    top: -38px;
+    width: 76px;
+    height: 76px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 45% 45%, #fffbe0, #ffd84d 45%, #ff9a1f 80%, #ff7a00);
+    box-shadow: 0 0 40px 12px rgba(255, 190, 60, 0.65), 0 0 130px 55px rgba(255, 130, 20, 0.28);
+    animation: sunglow 4s ease-in-out infinite alternate;
+  }
+  @keyframes sunglow { to { box-shadow: 0 0 52px 18px rgba(255, 200, 70, 0.75), 0 0 160px 70px rgba(255, 130, 20, 0.32); } }
+
+  /* The big C turns into Earth with its Moon. */
+  .letter { overflow: visible; }
+  .letter .guide, .letter .stroke { transition: opacity 0.6s ease; }
+  html.space .letter .guide, html.space .letter .stroke { opacity: 0; }
+  .earth {
+    opacity: 0;
+    transform: scale(0.3) rotate(-30deg);
+    transform-origin: 100px 100px;
+    transition: opacity 0.7s ease, transform 1s cubic-bezier(.3, 1.4, .5, 1);
+  }
+  html.space .earth { opacity: 1; transform: none; transition-delay: 0.3s; }
+  .earth .land { animation: drift 26s linear infinite; }
+  .earth .clouds { animation: drift 17s linear infinite; }
+  @keyframes drift { to { transform: translateX(-280px); } }
+  .earth .moon { transform-origin: 100px 100px; animation: moon 14s linear infinite; }
+  @keyframes moon { to { transform: rotate(360deg); } }
+
+  /* Light text on the dark sky. */
+  body { transition: color 0.8s ease; }
+  html.space body { color: #EEF1FF; }
+  html.space .hero-inner { text-shadow: 0 2px 14px rgba(0, 0, 0, 0.7); }
+  html.space .stamp { color: #FF9EB1; border-color: #FF9EB1; }
+  html.space .hero a { color: #FFD166; }
+  html.space .doodle { fill-opacity: 0.4; }
+
+  @media (max-width: 640px) {
+    .solar { left: 50%; top: 86%; transform: scale(0.5); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .space-layer *, .earth, .earth * { animation: none !important; transition: none !important; }
+    .space-layer { transition: none; }
+  }
   @media (max-width: 640px) {
     .doodle.wide { display: none; }
     .doodle.m-low { top: 90%; }
@@ -54,6 +195,23 @@
 </style>
 </head>
 <body>
+<div class="space-layer" aria-hidden="true">
+  <svg class="starfield"></svg>
+  <div class="shooting"></div>
+  <div class="solar">
+    <div class="orbits">
+      <div class="orbit mercury"><div class="planet"></div></div>
+      <div class="orbit venus"><div class="planet"></div></div>
+      <div class="orbit earthlet"><div class="planet"></div></div>
+      <div class="orbit mars"><div class="planet"></div></div>
+      <div class="orbit jupiter"><div class="planet"></div></div>
+      <div class="orbit saturn"><div class="planet"></div></div>
+      <div class="orbit uranus"><div class="planet"></div></div>
+      <div class="orbit neptune"><div class="planet"></div></div>
+    </div>
+    <div class="sun"></div>
+  </div>
+</div>
 <header class="hero">
   <div class="doodles" aria-hidden="true">
     <svg width="0" height="0" style="position:absolute"><defs>
@@ -61,15 +219,15 @@
       <symbol id="star" viewBox="0 0 100 100"><path d="M50.0 12.0 L60.6 39.4 L89.9 41.0 L67.1 59.6 L74.7 88.0 L50.0 72.0 L25.3 88.0 L32.9 59.6 L10.1 41.0 L39.4 39.4 Z"/></symbol>
     </defs></svg>
     <svg class="doodle red heart" style="--x:6%;--y:10%;--s:52px;--r:-14deg;--d:2.2s"><use href="#heart"/></svg>
-    <svg class="doodle gold" style="--x:88%;--y:8%;--s:60px;--r:12deg;--d:2.4s"><use href="#star"/></svg>
+    <svg class="doodle gold star" style="--x:88%;--y:8%;--s:60px;--r:12deg;--d:2.4s"><use href="#star"/></svg>
     <svg class="doodle pink wide heart" style="--x:74%;--y:30%;--s:34px;--r:-8deg;--d:2.6s"><use href="#heart"/></svg>
-    <svg class="doodle blue m-low" style="--x:16%;--y:72%;--s:40px;--r:18deg;--d:2.8s"><use href="#star"/></svg>
+    <svg class="doodle blue m-low star" style="--x:16%;--y:72%;--s:40px;--r:18deg;--d:2.8s"><use href="#star"/></svg>
     <svg class="doodle red heart" style="--x:90%;--y:70%;--s:48px;--r:-10deg;--d:3.0s"><use href="#heart"/></svg>
-    <svg class="doodle pink wide" style="--x:48%;--y:6%;--s:30px;--r:20deg;--d:3.2s"><use href="#star"/></svg>
-    <svg class="doodle gold wide" style="--x:58%;--y:86%;--s:38px;--r:-16deg;--d:3.4s"><use href="#star"/></svg>
+    <svg class="doodle pink wide star" style="--x:48%;--y:6%;--s:30px;--r:20deg;--d:3.2s"><use href="#star"/></svg>
+    <svg class="doodle gold wide star" style="--x:58%;--y:86%;--s:38px;--r:-16deg;--d:3.4s"><use href="#star"/></svg>
     <svg class="doodle blue wide heart" style="--x:34%;--y:90%;--s:30px;--r:8deg;--d:3.6s"><use href="#heart"/></svg>
-    <svg class="doodle gold wide" style="--x:3%;--y:44%;--s:28px;--r:10deg;--d:3.8s"><use href="#star"/></svg>
-    <svg class="doodle blue wide" style="--x:80%;--y:52%;--s:26px;--r:-20deg;--d:4.0s"><use href="#star"/></svg>
+    <svg class="doodle gold wide star" style="--x:3%;--y:44%;--s:28px;--r:10deg;--d:3.8s"><use href="#star"/></svg>
+    <svg class="doodle blue wide star" style="--x:80%;--y:52%;--s:26px;--r:-20deg;--d:4.0s"><use href="#star"/></svg>
   </div>
   <div class="hero-inner">
     <svg class="letter" viewBox="0 0 200 200" role="img" aria-label="A crayon letter C">
@@ -78,7 +236,51 @@
           <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" result="noise"/>
           <feDisplacementMap in="SourceGraphic" in2="noise" scale="4"/>
         </filter>
+        <radialGradient id="ocean" cx="45%" cy="40%" r="65%">
+          <stop offset="0" stop-color="#5fb4ff"/>
+          <stop offset="0.6" stop-color="#2166c9"/>
+          <stop offset="1" stop-color="#0d2f6e"/>
+        </radialGradient>
+        <radialGradient id="earthShade" cx="38%" cy="35%" r="75%">
+          <stop offset="0.45" stop-color="#000814" stop-opacity="0"/>
+          <stop offset="1" stop-color="#000814" stop-opacity="0.7"/>
+        </radialGradient>
+        <clipPath id="earthClip"><circle cx="100" cy="100" r="70"/></clipPath>
+        <radialGradient id="moonFill" cx="35%" cy="35%" r="70%">
+          <stop offset="0" stop-color="#f4f4f6"/>
+          <stop offset="1" stop-color="#8d8f99"/>
+        </radialGradient>
+        <filter id="glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="4"/></filter>
       </defs>
+      <g class="earth">
+        <circle cx="100" cy="100" r="76" fill="none" stroke="#7fc4ff" stroke-width="8" opacity="0.55" filter="url(#glow)"/>
+        <g clip-path="url(#earthClip)">
+          <circle cx="100" cy="100" r="70" fill="url(#ocean)"/>
+          <g class="land" fill="#46a35a">
+            <g id="continents">
+              <path d="M60 50 C75 40 95 45 98 60 C100 72 88 78 84 90 C80 100 92 110 90 125 C88 140 78 150 72 160 C68 150 70 135 64 122 C58 110 50 100 54 88 C57 78 48 62 60 50 Z"/>
+              <path d="M150 48 C165 42 180 50 178 62 C176 70 166 70 168 80 C172 92 186 98 184 115 C182 132 170 145 162 150 C158 138 156 125 148 115 C140 105 142 92 146 84 C150 76 140 60 150 48 Z"/>
+              <path d="M200 45 C225 35 265 40 280 55 C292 68 278 80 262 82 C248 84 240 95 228 92 C214 88 204 76 198 66 C194 58 192 50 200 45 Z"/>
+              <path d="M255 120 C268 112 285 118 286 130 C287 142 272 146 262 142 C252 138 246 128 255 120 Z"/>
+            </g>
+            <use href="#continents" x="280"/>
+          </g>
+          <g class="clouds" fill="#ffffff" opacity="0.75">
+            <g id="cloudset">
+              <path d="M40 70 q12 -10 26 -2 q10 -8 20 2 q-8 8 -22 6 q-14 4 -24 -6 Z"/>
+              <path d="M120 112 q14 -9 28 0 q12 -6 22 4 q-10 8 -26 5 q-14 3 -24 -9 Z"/>
+              <path d="M205 62 q10 -8 22 -1 q10 -6 18 3 q-8 7 -20 5 q-12 2 -20 -7 Z"/>
+              <path d="M250 150 q12 -7 24 0 q8 -4 14 3 q-8 6 -20 4 q-10 1 -18 -7 Z"/>
+            </g>
+            <use href="#cloudset" x="280"/>
+          </g>
+          <ellipse cx="100" cy="30" rx="44" ry="10" fill="#f4fbff"/>
+          <ellipse cx="100" cy="172" rx="40" ry="10" fill="#f4fbff"/>
+          <circle cx="100" cy="100" r="70" fill="url(#earthShade)"/>
+          <ellipse cx="76" cy="70" rx="18" ry="12" fill="#ffffff" opacity="0.18"/>
+        </g>
+        <g class="moon"><circle cx="188" cy="100" r="9" fill="url(#moonFill)"/></g>
+      </g>
       <path class="guide" d="M149.5 50.5 A70 70 0 1 0 149.5 149.5"/>
       <path class="stroke" pathLength="100" d="M149.5 50.5 A70 70 0 1 0 149.5 149.5"/>
     </svg>
@@ -94,12 +296,24 @@
 </header>
 
 <script>
-  // Easter egg: each heart click re-traces the big C in the next crayon color.
+  // Easter eggs: tap a heart to re-draw the big C in a new color,
+  // tap a star to fly into space (tap a star again to come back).
   (function () {
     var colors = ['#F28DB2', '#F2B705', '#5B8DEF', '#2BA84A', '#8E5BD9', '#F5821F', '#1FAFA8', '#E63946'];
     var next = 0;
     var stroke = document.querySelector('.letter .stroke');
     var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    function bounce(el) {
+      if (reduceMotion.matches || !el.animate) return;
+      var r = getComputedStyle(el).getPropertyValue('--r').trim() || '0deg';
+      el.animate([
+        { transform: 'rotate(' + r + ') scale(1)' },
+        { transform: 'rotate(' + r + ') scale(1.35)' },
+        { transform: 'rotate(' + r + ') scale(1)' }
+      ], { duration: 350, easing: 'ease-out' });
+    }
+
     document.querySelectorAll('.doodle.heart').forEach(function (heart) {
       heart.addEventListener('click', function () {
         stroke.style.stroke = colors[next];
@@ -108,15 +322,37 @@
           stroke.style.animation = 'none';
           void stroke.getBoundingClientRect();
           stroke.style.animation = 'trace 1.6s ease-in-out forwards';
-          var r = getComputedStyle(heart).getPropertyValue('--r').trim() || '0deg';
-          if (heart.animate) {
-            heart.animate([
-              { transform: 'rotate(' + r + ') scale(1)' },
-              { transform: 'rotate(' + r + ') scale(1.35)' },
-              { transform: 'rotate(' + r + ') scale(1)' }
-            ], { duration: 350, easing: 'ease-out' });
-          }
         }
+        bounce(heart);
+      });
+    });
+
+    var starsMade = false;
+    function makeStarfield() {
+      var svg = document.querySelector('.starfield');
+      var ns = 'http://www.w3.org/2000/svg';
+      for (var i = 0; i < 220; i++) {
+        var c = document.createElementNS(ns, 'circle');
+        c.setAttribute('cx', (Math.random() * 100).toFixed(2) + '%');
+        c.setAttribute('cy', (Math.random() * 100).toFixed(2) + '%');
+        var big = Math.random() < 0.12;
+        c.setAttribute('r', big ? (1.3 + Math.random()).toFixed(2) : (0.4 + Math.random() * 0.8).toFixed(2));
+        c.setAttribute('opacity', (0.5 + Math.random() * 0.5).toFixed(2));
+        if (Math.random() < 0.35) {
+          c.setAttribute('class', 'tw');
+          c.style.setProperty('--tw', (1.5 + Math.random() * 3).toFixed(2) + 's');
+          c.style.animationDelay = (-Math.random() * 4).toFixed(2) + 's';
+        }
+        svg.appendChild(c);
+      }
+      starsMade = true;
+    }
+
+    document.querySelectorAll('.doodle.star').forEach(function (star) {
+      star.addEventListener('click', function () {
+        if (!starsMade) makeStarfield();
+        document.documentElement.classList.toggle('space');
+        bounce(star);
       });
     });
   })();
