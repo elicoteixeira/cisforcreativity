@@ -184,6 +184,54 @@
     .space-layer *, .earth, .earth * { animation: none !important; transition: none !important; }
     .space-layer { transition: none; }
   }
+  /* Space rocket: a cougar pilot towing a banner, flies across once per trip to space. */
+  .flight {
+    position: fixed;
+    left: 0;
+    top: 7vh;
+    z-index: 3;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    opacity: 0;
+    will-change: transform;
+  }
+  .flight-bob { display: flex; align-items: center; animation: bob 2.6s ease-in-out infinite; }
+  @keyframes bob {
+    0%, 100% { transform: translateY(0) rotate(-1.5deg); }
+    50% { transform: translateY(-8px) rotate(1.5deg); }
+  }
+  .banner {
+    position: relative;
+    padding: 0.35em 0.9em 0.35em 1.4em;
+    font-size: clamp(1.05rem, 2.6vw, 1.6rem);
+    font-weight: 700;
+    white-space: nowrap;
+    color: #B3202E;
+    background: linear-gradient(180deg, #FFF8E7, #F6E7C4);
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 0.7em 50%);
+    box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.08);
+    transform-origin: right center;
+    animation: wave 1.4s ease-in-out infinite;
+    text-shadow: none;
+  }
+  @keyframes wave {
+    0%, 100% { transform: skewY(-1.5deg) scaleY(1); }
+    50% { transform: skewY(1.5deg) scaleY(0.96); }
+  }
+  .tow { width: clamp(36px, 5vw, 56px); height: clamp(64px, 9vw, 92px); flex: 0 0 auto; }
+  .rocket { width: clamp(150px, 19vw, 230px); height: auto; flex: 0 0 auto; overflow: visible; }
+  .rocket .flame { transform-box: fill-box; transform-origin: right center; animation: flicker 0.14s ease-in-out infinite alternate; }
+  @keyframes flicker { from { transform: scaleX(0.8) scaleY(0.92); } to { transform: scaleX(1.12) scaleY(1.04); } }
+  @media (max-width: 640px) {
+    /* Small enough that the whole message fits on a phone screen at once. */
+    .banner { font-size: 0.95rem; }
+    .tow { width: 24px; height: 56px; }
+    .rocket { width: 110px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .flight-bob, .banner, .rocket .flame { animation: none; }
+  }
   @media (max-width: 640px) {
     .doodle.wide { display: none; }
     .doodle.m-low { top: 90%; }
@@ -209,6 +257,65 @@
       <div class="orbit neptune"><div class="planet"></div></div>
     </div>
     <div class="sun"></div>
+  </div>
+</div>
+<div class="flight" aria-hidden="true">
+  <div class="flight-bob">
+    <div class="banner">Hello 2nd Grade Cougars</div>
+    <svg class="tow" viewBox="0 0 50 90" preserveAspectRatio="none">
+      <path d="M0 22 Q28 40 50 52 M0 68 Q28 58 50 52" fill="none" stroke="#c9d3ea" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+    <svg class="rocket" viewBox="0 0 200 100">
+      <defs>
+        <linearGradient id="hull" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#ffffff"/>
+          <stop offset="0.55" stop-color="#e9edf5"/>
+          <stop offset="1" stop-color="#b9c2d4"/>
+        </linearGradient>
+        <radialGradient id="glass" cx="40%" cy="35%" r="70%">
+          <stop offset="0" stop-color="#e6f6ff"/>
+          <stop offset="1" stop-color="#8fc9f0"/>
+        </radialGradient>
+        <clipPath id="window"><circle cx="112" cy="50" r="21"/></clipPath>
+      </defs>
+      <g class="flame">
+        <path d="M44 36 Q4 50 44 64 Q26 50 44 36 Z" fill="#ff8a1f"/>
+        <path d="M44 42 Q20 50 44 58 Q34 50 44 42 Z" fill="#ffe066"/>
+      </g>
+      <path d="M45 30 L28 6 Q26 2 31 3 L74 30 Z" fill="#E63946"/>
+      <path d="M45 70 L28 94 Q26 98 31 97 L74 70 Z" fill="#E63946"/>
+      <path d="M40 30 L140 30 Q182 30 198 50 Q182 70 140 70 L40 70 Q33 50 40 30 Z" fill="url(#hull)"/>
+      <path d="M150 30 Q182 30 198 50 Q182 70 150 70 Q160 50 150 30 Z" fill="#E63946"/>
+      <rect x="40" y="46" width="38" height="8" rx="4" fill="#5B8DEF" opacity="0.85"/>
+      <circle cx="112" cy="50" r="21" fill="url(#glass)"/>
+      <g clip-path="url(#window)">
+        <g transform="translate(112 52) scale(1.45) translate(-112 -52)">
+          <circle cx="104" cy="42.5" r="4.3" fill="#7a4e28"/>
+          <circle cx="120" cy="42.5" r="4.3" fill="#7a4e28"/>
+          <circle cx="104.4" cy="43" r="2.4" fill="#ecc9a0"/>
+          <circle cx="119.6" cy="43" r="2.4" fill="#ecc9a0"/>
+          <ellipse cx="112" cy="52" rx="12.2" ry="11.2" fill="#d49a5c"/>
+          <ellipse cx="112" cy="46" rx="5" ry="3" fill="#dfac72"/>
+          <ellipse cx="104.6" cy="56.2" rx="1.5" ry="2.6" fill="#4a3020" opacity="0.85"/>
+          <ellipse cx="119.4" cy="56.2" rx="1.5" ry="2.6" fill="#4a3020" opacity="0.85"/>
+          <ellipse cx="108.4" cy="57.4" rx="4.4" ry="3.4" fill="#fff7ec"/>
+          <ellipse cx="115.6" cy="57.4" rx="4.4" ry="3.4" fill="#fff7ec"/>
+          <ellipse cx="112" cy="61.2" rx="3" ry="1.7" fill="#fff7ec"/>
+          <path d="M109.4 51 Q108.8 53.2 109.8 54.6 M114.6 51 Q115.2 53.2 114.2 54.6" fill="none" stroke="#8a5a30" stroke-width="0.7" stroke-linecap="round"/>
+          <circle cx="107.6" cy="49.6" r="2.1" fill="#e2a62a"/>
+          <circle cx="116.4" cy="49.6" r="2.1" fill="#e2a62a"/>
+          <ellipse cx="107.6" cy="49.6" rx="0.8" ry="1.6" fill="#1f1a17"/>
+          <ellipse cx="116.4" cy="49.6" rx="0.8" ry="1.6" fill="#1f1a17"/>
+          <circle cx="108.2" cy="48.9" r="0.5" fill="#fff"/>
+          <circle cx="117" cy="48.9" r="0.5" fill="#fff"/>
+          <path d="M109.7 53.8 Q112 53 114.3 53.8 Q113.1 56 112 56.2 Q110.9 56 109.7 53.8 Z" fill="#df8686" stroke="#5a3a2a" stroke-width="0.4"/>
+          <path d="M112 56.2 L112 57.8 M112 57.8 Q110.3 59.4 108.8 58.6 M112 57.8 Q113.7 59.4 115.2 58.6" fill="none" stroke="#5a3a2a" stroke-width="0.7" stroke-linecap="round"/>
+          <path d="M106 57 L99.5 55.6 M106 58.4 L99.5 59.2 M118 57 L124.5 55.6 M118 58.4 L124.5 59.2" stroke="#ffffff" stroke-width="0.35" opacity="0.9" stroke-linecap="round"/>
+        </g>
+      </g>
+      <circle cx="112" cy="50" r="21" fill="none" stroke="#9aa7bd" stroke-width="4"/>
+      <ellipse cx="102" cy="38" rx="5" ry="2.6" fill="#ffffff" opacity="0.4"/>
+    </svg>
   </div>
 </div>
 <header class="hero">
@@ -304,6 +411,7 @@
 <script>
   // Easter eggs: tap a heart to re-draw the big C in a new color,
   // tap a star to fly into space (tap a star again to come back).
+  // A cougar pilot's rocket flies past once on each trip to space.
   (function () {
     var colors = ['#F28DB2', '#F2B705', '#5B8DEF', '#2BA84A', '#8E5BD9', '#F5821F', '#1FAFA8', '#E63946'];
     var next = 0;
@@ -354,10 +462,39 @@
       starsMade = true;
     }
 
+    // The rocket crosses the screen once, slowly, each trip to space.
+    var flight = document.querySelector('.flight');
+    var trip = null;
+    function launch() {
+      land();
+      if (!flight.animate) return;
+      var vw = window.innerWidth;
+      var w = flight.offsetWidth;
+      if (reduceMotion.matches) {
+        var x = Math.max(8, (vw - w) / 2) + 'px';
+        trip = flight.animate([
+          { transform: 'translateX(' + x + ')', opacity: 0 },
+          { transform: 'translateX(' + x + ')', opacity: 1, offset: 0.1 },
+          { transform: 'translateX(' + x + ')', opacity: 1, offset: 0.9 },
+          { transform: 'translateX(' + x + ')', opacity: 0 }
+        ], { duration: 7000, delay: 1200 });
+        return;
+      }
+      var speed = vw < 640 ? 75 : 105;
+      trip = flight.animate([
+        { transform: 'translateX(' + (-w) + 'px)', opacity: 1 },
+        { transform: 'translateX(' + vw + 'px)', opacity: 1 }
+      ], { duration: (vw + w) / speed * 1000, delay: 1400, easing: 'linear' });
+    }
+    function land() {
+      if (trip) { trip.cancel(); trip = null; }
+    }
+
     document.querySelectorAll('.doodle.star').forEach(function (star) {
       star.addEventListener('click', function () {
         if (!starsMade) makeStarfield();
-        document.documentElement.classList.toggle('space');
+        var inSpace = document.documentElement.classList.toggle('space');
+        if (inSpace) launch(); else land();
         bounce(star);
       });
     });
