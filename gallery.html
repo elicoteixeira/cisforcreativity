@@ -12,26 +12,28 @@
 <link rel="stylesheet" href="styles.css?v=2">
 <style>
   /* Kept in the page itself so these rules always match this markup. */
-  .gallery { margin-top: 2.5rem; counter-reset: creation; }
-  .gallery li { counter-increment: creation; }
-  /* Number for each creation, written neatly in red crayon (like the big C on the
-     home page) to the left of the photo: #1, #2, ... counted automatically. */
+  .gallery { margin-top: 2.5rem; }
+  /* Number for each creation, hand-drawn in red crayon strokes like the big C on the
+     home page. The script at the bottom writes #1, #2, ... in list order. */
   .gallery { column-gap: 4.5rem; }
   .gallery li { position: relative; }
-  .gallery li::before {
-    content: "#" counter(creation);
+  .hand-num {
     position: absolute;
-    top: 1.4rem;
-    right: calc(100% + 0.6rem);
-    font-size: 2.2rem;
-    font-weight: 700;
-    line-height: 1;
-    color: var(--crayon, #E63946);
+    top: 1rem;
+    right: calc(100% + 1.2rem);
+    height: 3rem;
+    width: auto;
+    overflow: visible;
+    fill: none;
+    stroke: var(--crayon, #E63946);
+    stroke-width: 6.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
     filter: url(#crayon);
   }
   @media (max-width: 640px) {
     /* No room in the margin on phones: write the number just above the photo. */
-    .gallery li::before { position: static; display: block; margin-bottom: 0.4rem; }
+    .hand-num { position: static; display: block; margin-bottom: 0.4rem; }
   }
 </style>
 </head>
@@ -46,7 +48,7 @@
   <a class="back" href="./">&larr; Home</a>
   <h1>Our creations</h1>
 
-  <!-- To add a creation: copy one <li> block, change the image, caption, and story. The #number counts itself. -->
+  <!-- To add a creation: copy one <li> block, change the image, caption, and story. The #number is written automatically. -->
   <ul class="gallery">
     <li>
       <figure class="sticker">
@@ -60,5 +62,48 @@
     </li>
   </ul>
 </main>
+<script>
+  // Write each creation's number (#1, #2, ...) as crayon pen strokes, one path per character.
+  (function () {
+    var glyphs = {
+      '#': 'M11 8 L8 44 M22 8 L19 44 M3 19 L28 19 M2 33 L27 33',
+      '0': 'M15 4 C4 4 3 18 3 25 C3 34 6 46 15 46 C24 46 27 34 27 25 C27 16 25 4 15 4 Z',
+      '1': 'M8 12 L17 4 L17 46',
+      '2': 'M4 14 C5 6 11 3 16 3 C23 3 27 8 26 15 C25 22 18 28 4 46 L27 46',
+      '3': 'M5 8 C9 3 23 2 24 11 C25 19 16 23 12 23 C20 23 27 27 26 36 C25 46 9 48 4 41',
+      '4': 'M20 46 L20 4 L3 32 L28 32',
+      '5': 'M25 4 L8 4 L6 21 C11 18 16 18 20 19 C27 22 27 31 26 36 C24 46 9 48 4 41',
+      '6': 'M23 6 C17 2 6 5 4 20 C2 34 6 46 15 46 C23 46 26 39 26 33 C26 26 21 22 15 22 C9 22 5 27 4 31',
+      '7': 'M3 4 L27 4 L12 46',
+      '8': 'M15 23 C7 21 5 16 5 12 C5 6 10 3 15 3 C20 3 25 6 25 12 C25 17 21 21 15 23 C8 25 4 30 4 35 C4 42 9 47 15 47 C21 47 26 42 26 35 C26 30 22 25 15 23 Z',
+      '9': 'M26 18 C25 25 20 27 15 27 C8 27 4 22 4 15 C4 8 9 3 15 3 C22 3 26 8 26 18 C26 30 24 46 10 46'
+    };
+    // Small per-character wobble (tilt, baseline, size) so it reads as handwriting.
+    var tilt = [-4, 3, -2, 4, -3];
+    var lift = [0, -1.5, 1, -0.5, 1.5];
+    var size = [1, 0.96, 1.04, 0.98, 1.02];
+    var ns = 'http://www.w3.org/2000/svg';
+    document.querySelectorAll('.gallery > li').forEach(function (li, i) {
+      var text = '#' + (i + 1);
+      var svg = document.createElementNS(ns, 'svg');
+      svg.setAttribute('class', 'hand-num');
+      svg.setAttribute('role', 'img');
+      svg.setAttribute('aria-label', 'Number ' + (i + 1));
+      var x = 0;
+      for (var k = 0; k < text.length; k++) {
+        var path = document.createElementNS(ns, 'path');
+        path.setAttribute('d', glyphs[text[k]]);
+        var j = (i + k) % tilt.length;
+        var sc = text[k] === '#' ? 0.8 : size[j];
+        var dy = text[k] === '#' ? 6 : lift[j];
+        path.setAttribute('transform', 'translate(' + x + ' ' + dy + ') rotate(' + tilt[j] + ' 15 25) translate(15 25) scale(' + sc + ') translate(-15 -25)');
+        svg.appendChild(path);
+        x += text[k] === '#' ? 27 : 33;
+      }
+      svg.setAttribute('viewBox', '-5 -4 ' + (x + 4) + ' 60');
+      li.insertBefore(svg, li.firstChild);
+    });
+  })();
+</script>
 </body>
 </html>
